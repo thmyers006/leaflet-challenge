@@ -104,23 +104,24 @@ function createMap(earthquakes) {
   }).addTo(myMap);
 }
 
-
-
 // Create legend
-function createLegend(feature) {
+
 var legend = L.control({position: "bottomleft"});
 legend.onAdd = function() {
   var div = L.DomUtil.create("div", "info legend");
-  var limits = feature.geometry.coordinates[2];
-  var colors = getColor(feature.geometry.coordinates[2]);
+  //var limits = feature.geometry.coordinates[2];
+  //console.log(limits);
+  var grades = [-10, 0, 30, 60, 90, 120, 150];   
+  var colors = ["#b8b7a5", "#f5f187", "#ede609", "#9dabed", "#5b76f0", "#e174e3", "#7b057d"];
+  //var colors = getColor(feature.geometry.coordinates[2]);
   var labels = [];
   // Add min and max
   var legendInfo = "<h2>Earthquake Depth</h2>" + "<div class=\"labels\">" + 
-                  "<div class=\"min\">" + limits[0] + "</div>" +
-                  "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
+                  "<div class=\"min\">" + grades[0] + "</div>" +
+                  "<div class=\"max\">" + grades[grades.length - 1] + "</div>" +
                   "</div>";
   div.innerHTML = legendInfo;
-  limits.forEach(function(limit, index) {
+  grades.forEach(function(limit, index) {
     labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
   });
   div.innerHTML += "<ul>" + labels.join("") + "</ul>";
@@ -129,7 +130,6 @@ legend.onAdd = function() {
 
 // Adding legend to the map
 legend.addTo(myMap);
-}
 
 
 
