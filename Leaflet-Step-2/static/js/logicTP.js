@@ -16,12 +16,12 @@ var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z
   accessToken: API_KEY
 });
 
-// added in attempt at a satellite map layer -- overlay or basemap see website... https://docs.mapbox.com/help/glossary/mapbox-satellite/?
-var satelliteMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+// adding in a satellite map layer basemap 
+  var satelliteMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
   maxZoom: 18,
   id: "satellite-v9",
-  accessToken: API_KEY // added thinking its necessary to make map appear with 
+  accessToken: API_KEY  
 });
 
 // Creating map object
@@ -35,7 +35,7 @@ var myMap = L.map("map", {
 streetmap.addTo(myMap);
 
 
-// Store API query variables
+// Store API query variables for earthquakes and tectonic plates
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson";
 var platesURL = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_steps.json"
 
@@ -53,15 +53,6 @@ function onEachFeature(feature, layer) {
     "</h4><hr><p>" + new Date(feature.properties.time) + "</p>" + "Depth : " + feature.geometry.coordinates[2] +
     " Magnitude : " + feature.properties.mag);
 }
-/* d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json", function (platedata) { 
-  // Adding our geoJSON data, along with style information, to the tectonicplates      // layer.      
-  L.geoJson(platedata, {   
-         color: "orange",        weight: 2      })      .addTo(tectonicplates); */
-  // Then add the tectonicplates layer to the map.      tectonicplates.addTo(map);    });
-
-
-  //Grab the techtonic plates data using d3
-  //Perform a GET request to the tectonic platesURL
   
   // create function to differentiate altitude of earthquake by color of circle
   function getColor(depth) {
@@ -137,12 +128,11 @@ function onEachFeature(feature, layer) {
   var legend = L.control({ position: "bottomleft" });
   legend.onAdd = function () {
     var div = L.DomUtil.create("div", "info legend");
-    //var limits = feature.geometry.coordinates[2];
     //console.log(limits);
     var grades = [-10, 0, 30, 60, 90, 120, 150];
     var colors = ["#b8b7a5", "#f5f187", "#ede609", "#9dabed", "#5b76f0", "#e174e3", "#7b057d"];
-    //var colors = getColor(feature.geometry.coordinates[2]);
     var labels = [];
+
     // Add min and max
     var legendInfo = "<h2>Earthquake Depth</h2>" + "<div class=\"labels\">" +
       "<div class=\"min\">" + grades[0] + "</div>" +
@@ -158,18 +148,6 @@ function onEachFeature(feature, layer) {
 
   // Adding legend to the map
   legend.addTo(myMap);
-
-  //Attempting to add techtonic plates to the map
-  /* function createPlates(data2) {
-    var plates = L.geoJSON(data2, {
-      onEachFeature: onEachFeature,
-      pointToLayer: function (feature, latlng) {
-        return L.polyline(latlng);
-      }
-    })
-  }; */
-
-
 
   function createFeatures(earthquakeData) {
 
