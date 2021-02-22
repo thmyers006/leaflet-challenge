@@ -18,16 +18,16 @@ var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z
 
 // Creating map object
 var myMap = L.map("map", {
-  center: [40, -94],
+  center: [39.828, -98.579],
   zoom: 3,
   layers: [streetmap, darkmap]
 
 });
-// Adding tile layer to the map
+// Adding single tile layer to the map for initiation
 streetmap.addTo(myMap);
 
 
-// Store API query variables
+// Store API query variable
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson";
 
 // Grab the data with d3
@@ -71,7 +71,7 @@ function getColor(depth) {
   }
 }
 
-//this is where we stopped and it became the Theresa show
+//create function to format markers for earthquakes
 function style(feature) {
   return {
     "color": "#000000",
@@ -109,12 +109,11 @@ function createMap(earthquakes) {
 var legend = L.control({position: "bottomleft"});
 legend.onAdd = function() {
   var div = L.DomUtil.create("div", "info legend");
-  //var limits = feature.geometry.coordinates[2];
-  //console.log(limits);
+    //console.log(limits);
   var grades = [-10, 0, 30, 60, 90, 120, 150];   
   var colors = ["#b8b7a5", "#f5f187", "#ede609", "#9dabed", "#5b76f0", "#e174e3", "#7b057d"];
-  //var colors = getColor(feature.geometry.coordinates[2]);
   var labels = [];
+
   // Add min and max
   var legendInfo = "<h2>Earthquake Depth</h2>" + "<div class=\"labels\">" + 
                   "<div class=\"min\">" + grades[0] + "</div>" +
@@ -130,8 +129,6 @@ legend.onAdd = function() {
 
 // Adding legend to the map
 legend.addTo(myMap);
-
-
 
 
 function createFeatures(earthquakeData) {
